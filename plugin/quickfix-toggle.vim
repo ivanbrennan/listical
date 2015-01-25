@@ -1,15 +1,18 @@
 nnoremap <silent> <Plug>QuickfixToggle :call <SID>QuickfixToggle()<CR>
 
-let g:quickfix_is_open = 0
-
 function! s:QuickfixToggle()
-  if g:quickfix_is_open
-    cclose
-    let g:quickfix_is_open = 0
-    execute g:quickfix_return_to_window . "wincmd w"
-  else
-    let g:quickfix_return_to_window = winnr()
-    copen
-    let g:quickfix_is_open = 1
-  endif
+  let max_win = winnr('$')
+
+  for i in range(1, max_win)
+    let buf = winbufnr(i)
+    let typ = getbufvar(buf, '&buftype')
+
+    if typ == 'quickfix'
+      cclose
+      return
+    endif
+  endfor
+
+  copen
 endfunction
+
