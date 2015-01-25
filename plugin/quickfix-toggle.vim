@@ -1,4 +1,4 @@
-nnoremap <silent> <C-S-Space> :call <SID>QuickfixToggle()<CR>
+nnoremap <silent> <Plug>QuickfixToggle :call <SID>QuickfixToggle()<CR>
 
 let g:quickfix_is_open = 0
 
