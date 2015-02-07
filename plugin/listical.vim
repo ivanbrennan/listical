@@ -11,21 +11,21 @@ function! s:Buffers()
   return split(output, '\n')
 endfunction
 
-function! s:Buffers_of_type(type)
+function! s:BuffersOfType(type)
   return filter(s:Buffers(), 'v:val =~ "'.a:type.'"')
 endfunction
 
-function! s:Bufnrs_for(buffers)
+function! s:BufnrsFor(buffers)
   return map(a:buffers, 'str2nr(matchstr(v:val, "\\d\\+"))')
 endfunction
 
-function! s:Is_open(bufnr)
+function! s:IsOpen(bufnr)
   return bufwinnr(a:bufnr) != -1
 endfunction
 
 function! s:QfxListical()
-  for bufnr in s:Bufnrs_for(s:Buffers_of_type("Quickfix List"))
-    if s:Is_open(bufnr)
+  for bufnr in s:BufnrsFor(s:BuffersOfType("Quickfix List"))
+    if s:IsOpen(bufnr)
       cclose
       return
     endif
@@ -36,7 +36,7 @@ endfunction
 function! s:LocListical()
   let cur_bufnr = winbufnr(0)
 
-  for bufnr in s:Bufnrs_for(s:Buffers_of_type("Location List"))
+  for bufnr in s:BufnrsFor(s:BuffersOfType("Location List"))
     if bufnr == cur_bufnr
       lclose
       return
