@@ -3,27 +3,27 @@ if exists("g:loaded_listical") || &cp
 endif
 let g:loaded_listical = 1
 
-function! s:Buffers()
+func! s:Buffers()
   redir   =>output
   silent! buffers
   redir   END
 
   return split(output, '\n')
-endfunction
+endf
 
-function! s:BuffersOfType(type)
+func! s:BuffersOfType(type)
   return filter(s:Buffers(), 'v:val =~ "'.a:type.'"')
-endfunction
+endf
 
-function! s:BufnrsFor(buffers)
+func! s:BufnrsFor(buffers)
   return map(a:buffers, 'str2nr(matchstr(v:val, "\\d\\+"))')
-endfunction
+endf
 
-function! s:IsOpen(bufnr)
+func! s:IsOpen(bufnr)
   return bufwinnr(a:bufnr) != -1
-endfunction
+endf
 
-function! s:QfxListical()
+func! s:QfxListical()
   for bufnr in s:BufnrsFor(s:BuffersOfType("Quickfix List"))
     if s:IsOpen(bufnr)
       cclose
@@ -31,9 +31,9 @@ function! s:QfxListical()
     endif
   endfor
   botright copen
-endfunction
+endf
 
-function! s:LocListical()
+func! s:LocListical()
   let cur_bufnr = winbufnr(0)
 
   for bufnr in s:BufnrsFor(s:BuffersOfType("Location List"))
@@ -46,7 +46,7 @@ function! s:LocListical()
   if getloclist(0) != []
     lopen
   endif
-endfunction
+endf
 
 nnoremap <silent> <Plug>QfxListical :call <SID>QfxListical()<CR>
 nnoremap <silent> <Plug>LocListical :call <SID>LocListical()<CR>
