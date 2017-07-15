@@ -39,7 +39,7 @@ func! s:LocListical()
     endif
   endfor
 
-  if getloclist(0) != []
+  if !empty(getloclist(0))
     lopen
   endif
 endf
