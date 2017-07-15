@@ -4,7 +4,7 @@ endif
 let g:loaded_listical = 1
 
 func! s:ActiveBuffers()
-  return split(execute('silent! buffers a'), '\n')
+  return split(execute('silent! buffers! a'), '\n')
 endf
 
 func! s:BuffersOfType(type)
