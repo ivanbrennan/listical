@@ -4,11 +4,7 @@ endif
 let g:loaded_listical = 1
 
 func! s:Buffers()
-  redir   =>output
-  silent! buffers
-  redir   END
-
-  return split(output, '\n')
+  return split(execute('silent! buffers'), '\n')
 endf
 
 func! s:BuffersOfType(type)
