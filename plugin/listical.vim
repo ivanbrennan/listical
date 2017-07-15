@@ -3,12 +3,12 @@ if exists("g:loaded_listical") || &cp
 endif
 let g:loaded_listical = 1
 
-func! s:Buffers()
-  return split(execute('silent! buffers'), '\n')
+func! s:ActiveBuffers()
+  return split(execute('silent! buffers a'), '\n')
 endf
 
 func! s:BuffersOfType(type)
-  return filter(s:Buffers(), 'v:val =~ "'.a:type.'"')
+  return filter(s:ActiveBuffers(), 'v:val =~ "'.a:type.'"')
 endf
 
 func! s:BufnrsFor(buffers)
