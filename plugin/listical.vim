@@ -3,45 +3,48 @@ if exists("g:loaded_listical") || &cp
 endif
 let g:loaded_listical = 1
 
-func! s:ActiveBuffers()
-  return split(execute('silent! buffers! a'), '\n')
-endf
-
-func! s:BuffersOfType(type)
-  return filter(s:ActiveBuffers(), 'v:val =~ "'.a:type.'"')
-endf
-
-func! s:BufnrsFor(buffers)
-  return map(a:buffers, 'str2nr(matchstr(v:val, "\\d\\+"))')
-endf
-
-func! s:IsOpen(bufnr)
-  return bufwinnr(a:bufnr) != -1
-endf
-
 func! s:QfxListical()
-  for bufnr in s:BufnrsFor(s:BuffersOfType("Quickfix List"))
-    if s:IsOpen(bufnr)
-      cclose
-      return
+  if s:QfWindowIsOpen()
+    cclose
+  else
+    botright copen
+  endif
+endf
+
+func! s:QfWindowIsOpen()
+  for n in range(1, winnr('$'))
+    if s:IsQfWindow(n)
+      return 1
     endif
   endfor
-  botright copen
+  return 0
+endf
+
+func! s:IsQfWindow(num)
+  return s:IsQfFiletype(a:num) && empty(getloclist(a:num))
+endf
+
+func! s:IsQfFiletype(num)
+  return getwinvar(a:num, '&filetype') == 'qf'
 endf
 
 func! s:LocListical()
-  let cur_bufnr = winbufnr(0)
+  let loclist = getloclist(0)
 
-  for bufnr in s:BufnrsFor(s:BuffersOfType("Location List"))
-    if bufnr == cur_bufnr
+  for n in range(1, winnr('$'))
+    if s:IsLocWindow(n) && getloclist(n) ==# loclist
       lclose
       return
     endif
   endfor
 
-  if !empty(getloclist(0))
+  if !empty(loclist)
     lopen
   endif
+endf
+
+func! s:IsLocWindow(num)
+  return s:IsQfFiletype(a:num) && !empty(getloclist(a:num))
 endf
 
 nnoremap <silent> <Plug>QfxListical :call <SID>QfxListical()<CR>
