@@ -1,3 +1,8 @@
+if exists('b:loaded_listical')
+  finish
+endif
+let b:loaded_listical = 1
+
 set nobuflisted
 
 if mapcheck('q', 'n') ==# ''
