@@ -1,3 +1,8 @@
+if exists("g:autoloaded_listical") || &cp
+  finish
+endif
+let g:autoloaded_listical = 1
+
 func! listical#toggle_quickfix()
   if s:quickfix_is_open()
     cclose
