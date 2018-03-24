@@ -3,12 +3,9 @@ if exists("g:autoloaded_listical") || &cp
 endif
 let g:autoloaded_listical = 1
 
-func! listical#toggle_quickfix()
-  if s:quickfix_is_open()
-    cclose
-  else
-    botright copen
-  endif
+func! listical#toggle()
+  let x = listical#toggle_loclist()
+  if !x | call listical#toggle_quickfix() | endif
 endf
 
 func! listical#toggle_loclist()
@@ -17,13 +14,25 @@ func! listical#toggle_loclist()
   for n in range(1, winnr('$'))
     if s:is_loclist_window(n) && getloclist(n) ==# loclist
       lclose
-      return
+      return 1
     endif
   endfor
 
   if !empty(loclist)
     lopen
+    return 1
   endif
+
+  return 0
+endf
+
+func! listical#toggle_quickfix()
+  if s:quickfix_is_open()
+    cclose
+  else
+    botright copen
+  endif
+  return 1
 endf
 
 func! s:quickfix_is_open()
@@ -35,12 +44,12 @@ func! s:quickfix_is_open()
   return 0
 endf
 
-func! s:is_quickfix_window(num)
-  return s:is_qf_filetype(a:num) && empty(getloclist(a:num))
-endf
-
 func! s:is_loclist_window(num)
   return s:is_qf_filetype(a:num) && !empty(getloclist(a:num))
+endf
+
+func! s:is_quickfix_window(num)
+  return s:is_qf_filetype(a:num) && empty(getloclist(a:num))
 endf
 
 func! s:is_qf_filetype(num)
