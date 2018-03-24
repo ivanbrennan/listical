@@ -4,26 +4,19 @@ endif
 let g:autoloaded_listical = 1
 
 func! listical#toggle()
-  let x = listical#toggle_loclist()
-  if !x | call listical#toggle_quickfix() | endif
+  if s:loclist_exists()
+    call listical#toggle_loclist()
+  else
+    call listical#toggle_quickfix()
+  endif
 endf
 
 func! listical#toggle_loclist()
-  let loclist = getloclist(0)
-
-  for n in range(1, winnr('$'))
-    if s:is_loclist_window(n) && getloclist(n) ==# loclist
-      lclose
-      return 1
-    endif
-  endfor
-
-  if !empty(loclist)
-    lopen
-    return 1
+  if s:loclist_is_open()
+    lclose
+  else
+    silent! lopen
   endif
-
-  return 0
 endf
 
 func! listical#toggle_quickfix()
@@ -32,26 +25,16 @@ func! listical#toggle_quickfix()
   else
     botright copen
   endif
-  return 1
+endf
+
+func! s:loclist_exists()
+  return getloclist(0, {'id': 1}).id != 0
 endf
 
 func! s:quickfix_is_open()
-  for n in range(1, winnr('$'))
-    if s:is_quickfix_window(n)
-      return 1
-    endif
-  endfor
-  return 0
+  return getqflist({'winid': 1}).winid != 0
 endf
 
-func! s:is_loclist_window(num)
-  return s:is_qf_filetype(a:num) && !empty(getloclist(a:num))
-endf
-
-func! s:is_quickfix_window(num)
-  return s:is_qf_filetype(a:num) && empty(getloclist(a:num))
-endf
-
-func! s:is_qf_filetype(num)
-  return getwinvar(a:num, '&filetype') == 'qf'
+func! s:loclist_is_open()
+  return getloclist(0, {'winid': 1}).winid != 0
 endf
