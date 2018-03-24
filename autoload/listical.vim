@@ -27,6 +27,22 @@ func! listical#toggle_quickfix()
   endif
 endf
 
+func! listical#next()
+  if s:loclist_exists() | lnext | else | cnext | endif
+endf
+
+func! listical#previous()
+  if s:loclist_exists() | lprev | else | cprev | endif
+endf
+
+func! listical#newer()
+  if s:loclist_exists() | lnewer | else | cnewer | endif
+endf
+
+func! listical#older()
+  if s:loclist_exists() | lolder | else | colder | endif
+endf
+
 func! s:loclist_exists()
   return getloclist(0, {'id': 0}).id != 0
 endf
