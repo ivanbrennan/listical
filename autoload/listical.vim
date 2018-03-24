@@ -28,13 +28,13 @@ func! listical#toggle_quickfix()
 endf
 
 func! s:loclist_exists()
-  return getloclist(0, {'id': 1}).id != 0
+  return getloclist(0, {'id': 0}).id != 0
 endf
 
 func! s:quickfix_is_open()
-  return getqflist({'winid': 1}).winid != 0
+  return getqflist({'winid': 0}).winid != 0
 endf
 
 func! s:loclist_is_open()
-  return getloclist(0, {'winid': 1}).winid != 0
+  return getloclist(0, {'winid': 0}).winid != 0
 endf
