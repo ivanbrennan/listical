@@ -28,29 +28,40 @@ func! listical#toggle_quickfix()
 endf
 
 func! listical#next()
-  if s:loclist_exists() | lnext | else | cnext | endif
+  call s:go('next')
 endf
 
 func! listical#previous()
-  if s:loclist_exists() | lprev | else | cprev | endif
+  call s:go('prev')
 endf
 
 func! listical#newer()
-  if s:loclist_exists() | lnewer | else | cnewer | endif
+  call s:go('newer')
 endf
 
 func! listical#older()
-  if s:loclist_exists() | lolder | else | colder | endif
+  call s:go('older')
+endf
+
+func! s:go(cmd)
+  let prefix = s:loclist_exists() ? 'l' : 'c'
+  try
+    exec prefix . a:cmd
+  catch /\v^Vim%(\(\a+\))?:E553/        " no more items
+    echo v:exception
+  catch /\v^Vim%(\(\a+\))?:E%(380|381)/ " no more lists
+    " stay silent to avoid MORE prompt
+  endtry
 endf
 
 func! s:loclist_exists()
   return getloclist(0, {'id': 0}).id != 0
 endf
 
-func! s:quickfix_is_open()
-  return getqflist({'winid': 0}).winid != 0
-endf
-
 func! s:loclist_is_open()
   return getloclist(0, {'winid': 0}).winid != 0
+endf
+
+func! s:quickfix_is_open()
+  return getqflist({'winid': 0}).winid != 0
 endf
