@@ -52,6 +52,17 @@ func! s:go(cmd)
   catch /\v^Vim%(\(\a+\))?:E%(380|381)/ " no more lists
     " stay silent to avoid the MORE prompt
   endtry
+  call s:recall_search_pattern(prefix)
+endf
+
+func! s:recall_search_pattern(prefix)
+  let ctx = s:getlist(a:prefix).context
+  if !empty(ctx) | let @/ = ctx | endif
+endf
+
+func! s:getlist(prefix)
+  return a:prefix == 'l' ? getloclist(0, {'context': 0})
+  \                      : getqflist({'context': 0})
 endf
 
 func! s:loclist_exists()
