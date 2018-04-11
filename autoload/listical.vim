@@ -28,11 +28,15 @@ func! listical#toggle_quickfix()
 endf
 
 func! listical#next()
-  call s:go('next')
+  if s:go('next')
+    call listical#offset()
+  endif
 endf
 
 func! listical#previous()
-  call s:go('prev')
+  if s:go('prev')
+    call listical#offset()
+  endif
 endf
 
 func! listical#newer()
@@ -43,16 +47,28 @@ func! listical#older()
   call s:go('older')
 endf
 
+func! listical#offset()
+  let new = get(g:, 'listical_offset', 6)
+  let [old, &scrolloff] = [&scrolloff, new]
+  redraw
+  let &scrolloff = old
+endf
+
 func! s:go(cmd)
+  let moved = 0
+
   let prefix = s:loclist_exists() ? 'l' : 'c'
   try
     exec prefix . a:cmd
+    let moved = 1
+    call s:recall_search_pattern(prefix)
   catch /\v^Vim%(\(\a+\))?:E553/ " no more items
     echohl ErrorMsg | echo v:exception | echohl None
   catch /\v^Vim%(\(\a+\))?:E%(380|381)/ " no more lists
     " stay silent to avoid the MORE prompt
   endtry
-  call s:recall_search_pattern(prefix)
+
+  return moved
 endf
 
 func! s:recall_search_pattern(prefix)
