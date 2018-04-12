@@ -62,7 +62,7 @@ func! s:go(cmd) abort
     exec prefix . a:cmd
     let moved = 1
     call s:recall_search_pattern(prefix)
-  catch /\v^Vim%(\(\a+\))?:E553/ " no more items
+  catch /\v^Vim%(\(\a+\))?:E%(42|553)/ " no more items
     echohl ErrorMsg | echo v:exception | echohl None
   catch /\v^Vim%(\(\a+\))?:E%(380|381)/ " no more lists
     " stay silent to avoid the MORE prompt
