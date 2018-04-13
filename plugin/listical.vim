@@ -12,15 +12,15 @@ nnoremap <silent> <Plug>(listical_newer)    :call listical#newer()<CR>
 nnoremap <silent> <Plug>(listical_older)    :call listical#older()<CR>
 nnoremap <silent> <Plug>(listical_offset)   :call listical#offset()<CR>
 
-func! IsList() abort
+func! s:is_list() abort
   return &filetype == 'qf'
 endf
 
-func! JustList() abort
-  return IsList() && winnr('$') == 1
+func! s:just_list() abort
+  return s:is_list() && winnr('$') == 1
 endf
 
 augroup Listical
-  autocmd QuitPre  * if !IsList() | silent! lclose | endif
-  autocmd WinEnter * if JustList() | quit | endif
+  autocmd QuitPre  * if !<SID>is_list() | silent! lclose | endif
+  autocmd WinEnter * if <SID>just_list() | quit | endif
 augroup END
