@@ -11,3 +11,7 @@ nnoremap <silent> <Plug>(listical_previous) :call listical#previous()<CR>
 nnoremap <silent> <Plug>(listical_newer)    :call listical#newer()<CR>
 nnoremap <silent> <Plug>(listical_older)    :call listical#older()<CR>
 nnoremap <silent> <Plug>(listical_offset)   :call listical#offset()<CR>
+
+augroup Listical
+  autocmd QuitPre * if &filetype != 'qf' | silent! lclose | endif
+augroup END
