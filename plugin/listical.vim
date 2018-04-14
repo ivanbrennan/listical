@@ -10,7 +10,6 @@ nnoremap <silent> <Plug>(listical_next)     :call listical#next()<CR>
 nnoremap <silent> <Plug>(listical_previous) :call listical#previous()<CR>
 nnoremap <silent> <Plug>(listical_newer)    :call listical#newer()<CR>
 nnoremap <silent> <Plug>(listical_older)    :call listical#older()<CR>
-nnoremap <silent> <Plug>(listical_offset)   :call listical#offset()<CR>
 
 func! s:is_list() abort
   return &filetype == 'qf'
