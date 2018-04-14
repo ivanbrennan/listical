@@ -57,9 +57,7 @@ func! s:go(cmd) abort
 endf
 
 func! s:doautocmd(name)
-  if exists('#User#listical_'.a:name)
-    exec 'doautocmd <nomodeline> User listical_'.a:name
-  endif
+  exec 'silent doautocmd <nomodeline> User listical_'.a:name
 endf
 
 func! s:recall_search_pattern(prefix) abort
