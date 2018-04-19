@@ -61,8 +61,13 @@ func! s:doautocmd(name)
 endf
 
 func! s:recall_search_pattern(prefix) abort
+  let qry = s:getquery(a:prefix)
+  if !empty(qry) | let @/ = qry | endif
+endf
+
+func! s:getquery(prefix) abort
   let ctx = s:getlist(a:prefix).context
-  if !empty(ctx) | let @/ = ctx | endif
+  return get(ctx, 'query', '')
 endf
 
 func! s:getlist(prefix) abort
