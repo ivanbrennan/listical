@@ -31,8 +31,16 @@ func! listical#next() abort
   call s:go('next')
 endf
 
+func! listical#next_file() abort
+  call s:go('nfile')
+endf
+
 func! listical#previous() abort
   call s:go('prev')
+endf
+
+func! listical#previous_file() abort
+  call s:go('pfile')
 endf
 
 func! listical#newer() abort
